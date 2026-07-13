@@ -1,0 +1,229 @@
+# Concept dictionary v1 — authored at P0.4 from the printed labels of the six
+# corpus PDFs (this is curation, not manifest data; rule 5 does not apply).
+# Labels are stored with straight apostrophes; matching normalizes U+2019 and
+# NBSP (stop-2 rider), casefolds, collapses whitespace, and strips edge
+# punctuation/footnote markers (§3.2).
+#
+# context_labels is a flagged §3.2 EXTENSION (pending Ben's ratification):
+# both companies print EPS rows as bare "Basic"/"Diluted", identical to the
+# share-count rows below them; only the printed section-heading row
+# distinguishes the two. A context label matches iff the row label AND the
+# nearest preceding cell-less (heading) row both match exactly.
+#
+# typical_magnitude bands (§8-open) were set from the observed corpus values
+# with ~1-2 orders of margin; too tight => spurious quarantines, too loose =>
+# useless, so they get revisited if the benchmark shows either failure mode.
+version: 1
+
+concepts:
+  # ---- income statement ----------------------------------------------------
+  revenue:
+    statement: INCOME
+    unit: USD
+    description: "Total revenues / total net sales (GAAP top line)"
+    labels:
+      TSLA: ["Total revenues"]
+      AAPL: ["Total net sales"]
+    label_patterns: []
+    typical_magnitude: [1.0e+9, 1.0e+12]
+  cost_of_revenue:
+    statement: INCOME
+    unit: USD
+    description: "Total cost of revenues / total cost of sales"
+    labels:
+      TSLA: ["Total cost of revenues"]
+      AAPL: ["Total cost of sales"]
+    label_patterns: []
+    typical_magnitude: [1.0e+9, 1.0e+12]
+  gross_profit:
+    statement: INCOME
+    unit: USD
+    description: "Gross profit (Apple prints the dollar line as 'Gross margin')"
+    labels:
+      TSLA: ["Gross profit"]
+      AAPL: ["Gross margin"]   # the near-miss the dictionary exists to pin down
+    label_patterns: []
+    typical_magnitude: [1.0e+8, 1.0e+12]
+  rd_expense:
+    statement: INCOME
+    unit: USD
+    description: "Research and development operating expense"
+    labels:
+      TSLA: ["Research and development"]
+      AAPL: ["Research and development"]
+    label_patterns: []
+    typical_magnitude: [1.0e+8, 1.0e+11]
+  sga_expense:
+    statement: INCOME
+    unit: USD
+    description: "Selling, general and administrative operating expense"
+    labels:
+      TSLA: ["Selling, general and administrative"]
+      AAPL: ["Selling, general and administrative"]
+    label_patterns: []
+    typical_magnitude: [1.0e+8, 1.0e+11]
+  total_operating_expenses:
+    statement: INCOME
+    unit: USD
+    description: "Total operating expenses"
+    labels:
+      TSLA: ["Total operating expenses"]
+      AAPL: ["Total operating expenses"]
+    label_patterns: []
+    typical_magnitude: [1.0e+8, 1.0e+12]
+  operating_income:
+    statement: INCOME
+    unit: USD
+    description: "Operating income / income from operations"
+    labels:
+      TSLA: ["Income from operations"]
+      AAPL: ["Operating income"]
+    label_patterns: []
+    typical_magnitude: [1.0e+7, 1.0e+12]
+  net_income:
+    statement: INCOME
+    unit: USD
+    description: "Net income (GAAP bottom line, before attribution to noncontrolling interests)"
+    labels:
+      TSLA: ["Net income"]
+      AAPL: ["Net income"]
+    label_patterns: []
+    typical_magnitude: [1.0e+7, 1.0e+12]
+    disambiguate_from: [net_income_attributable_common]
+  net_income_attributable_common:
+    statement: INCOME
+    unit: USD
+    description: "Net income attributable to common stockholders (Tesla only; Apple does not print it)"
+    labels:
+      TSLA: ["Net income attributable to common stockholders"]
+      AAPL: []
+    label_patterns: []
+    typical_magnitude: [1.0e+7, 1.0e+12]
+    disambiguate_from: [net_income]
+  eps_basic:
+    statement: INCOME
+    unit: USD_PER_SHARE
+    description: "Basic earnings per share"
+    labels:
+      TSLA: []
+      AAPL: []
+    context_labels:
+      TSLA:
+        - section: "Net income per share of common stock attributable to common stockholders"
+          label: "Basic"
+      AAPL:
+        - section: "Earnings per share"
+          label: "Basic"
+    label_patterns: []
+    typical_magnitude: [0.01, 1000]
+  eps_diluted:
+    statement: INCOME
+    unit: USD_PER_SHARE
+    description: "Diluted earnings per share"
+    labels:
+      TSLA: []
+      AAPL: []
+    context_labels:
+      TSLA:
+        - section: "Net income per share of common stock attributable to common stockholders"
+          label: "Diluted"
+      AAPL:
+        - section: "Earnings per share"
+          label: "Diluted"
+    label_patterns: []
+    typical_magnitude: [0.01, 1000]
+  # ---- balance sheet ---------------------------------------------------------
+  cash_and_equivalents:
+    statement: BALANCE
+    unit: USD
+    description: "Cash and cash equivalents (balance-sheet line, not the cash-flow ending balance)"
+    labels:
+      TSLA: ["Cash and cash equivalents"]
+      AAPL: ["Cash and cash equivalents"]
+    label_patterns: []
+    typical_magnitude: [1.0e+8, 1.0e+12]
+  total_assets:
+    statement: BALANCE
+    unit: USD
+    description: "Total assets"
+    labels:
+      TSLA: ["Total assets"]
+      AAPL: ["Total assets"]
+    label_patterns: []
+    typical_magnitude: [1.0e+9, 1.0e+13]
+  total_liabilities:
+    statement: BALANCE
+    unit: USD
+    description: "Total liabilities"
+    labels:
+      TSLA: ["Total liabilities"]
+      AAPL: ["Total liabilities"]
+    label_patterns: []
+    typical_magnitude: [1.0e+9, 1.0e+13]
+  total_equity:
+    statement: BALANCE
+    unit: USD
+    description: "Total stockholders'/shareholders' equity (excludes Tesla's noncontrolling interests)"
+    labels:
+      TSLA: ["Total stockholders' equity"]
+      AAPL: ["Total shareholders' equity"]
+    label_patterns: []
+    typical_magnitude: [1.0e+8, 1.0e+13]
+  total_liabilities_and_equity:
+    statement: BALANCE
+    unit: USD
+    description: "Balance-sheet grand total (assets identity counterpart)"
+    labels:
+      TSLA: ["Total liabilities and equity"]
+      AAPL: ["Total liabilities and shareholders' equity"]
+    label_patterns: []
+    typical_magnitude: [1.0e+9, 1.0e+13]
+  # ---- cash flow --------------------------------------------------------------
+  operating_cash_flow:
+    statement: CASHFLOW
+    unit: USD
+    description: "Net cash provided by / generated by operating activities"
+    labels:
+      TSLA: ["Net cash provided by operating activities"]
+      AAPL: ["Cash generated by operating activities"]
+    label_patterns: []
+    typical_magnitude: [1.0e+8, 1.0e+12]
+  investing_cash_flow:
+    statement: CASHFLOW
+    unit: USD
+    description: "Net cash used in / generated by investing activities"
+    labels:
+      TSLA: ["Net cash used in investing activities"]
+      AAPL:
+        - "Cash generated by investing activities"
+        - "Cash generated by/(used in) investing activities"
+    label_patterns: []
+    typical_magnitude: [1.0e+8, 1.0e+12]
+  financing_cash_flow:
+    statement: CASHFLOW
+    unit: USD
+    description: "Net cash provided by / used in financing activities"
+    labels:
+      TSLA:
+        - "Net cash provided by financing activities"
+        - "Net cash (used in) provided by financing activities"
+        - "Net cash provided by (used in) financing activities"
+      AAPL: ["Cash used in financing activities"]
+    label_patterns: []
+    typical_magnitude: [1.0e+7, 1.0e+12]
+
+# Explicit near-miss pairs, mirrored from per-concept disambiguate_from.
+disambiguation_pairs:
+  - [net_income, net_income_attributable_common]
+
+# Per-company printed footing structure — consumed ONLY by the P1 footing
+# check. Format fixed now; contents authored at P1.1 from the real statements.
+footing:
+  TSLA:
+    INCOME: []
+    BALANCE: []
+    CASHFLOW: []
+  AAPL:
+    INCOME: []
+    BALANCE: []
+    CASHFLOW: []
