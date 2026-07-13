@@ -1,82 +1,48 @@
 # CLAUDE.md — SEC Filing Intelligence take-home
 
-## What this is
-Interview take-home: a prototype that answers financial questions from SEC
-filing PDFs with full traceability. The deliverable is graded on depth of
-fundamentals, trust mechanisms, and honest self-assessment — NOT on polish,
-feature count, or buzzwords. I (the candidate) must be able to explain and
-defend every decision live in a walkthrough.
-
-## Canonical documents (read in this order when context is needed)
-- EXERCISE.md — the assignment. Source of truth for requirements and grading.
-- ARCHITECTURE.md — frozen design decisions. Do not re-litigate them silently;
-  if implementation reveals a decision is wrong, STOP and flag it to me.
-- DESIGN.md — component-level implementation contract (same frozen rule once
-  approved).
-- ARCHITECTURE_full.md — reference appendix (long version). Read-only;
-  never edit or extend it.
-
-## The one-sentence thesis (never violate)
+## Thesis (never violate)
 Every LLM output is either checked by deterministic code or explicitly
 disclosed as unchecked. LLM proposes; code disposes.
 
-## Hard rules
-- ALL arithmetic in deterministic code with an emitted trace. The LLM never
-  computes, rounds, or restates a number.
-- No embeddings anywhere on the numeric answer path. Embeddings are for
-  MD&A/risk-factor prose retrieval only.
-- Numeric facts come only from the three primary financial statements.
-- EDGAR API calls are rationed: 2 `submissions` calls (manifest) + ≤20
-  one-time XBRL spot-checks for benchmark ground truth. Before ANY call:
-  check and update the budget ledger; log every call (endpoint, count,
-  purpose). Zero API calls on the query path, ever. Never hand-type manifest
-  data — it must come from the API.
-- Scope is governed by the P0/P1/P2 tiers in ARCHITECTURE.md §5.5. Never
-  build P1 before P0 is demo-able end-to-end; never build P2 at all.
-- Refusal with a stated reason is a valid, first-class output — never
-  fabricate or stretch to answer.
-
-## Data rules
-- Corpus: 6 PDFs in `data/raw/`, named exactly:
-  TSLA_10-K_FY2025.pdf, TSLA_10-Q_Q1-2026.pdf, TSLA_10-Q_Q1-2025.pdf,
-  AAPL_10-K_FY2025.pdf, AAPL_10-Q_FQ2-2026.pdf, AAPL_10-Q_FQ2-2025.pdf
-- Opaque-PDF rule: these PDFs are the only reality for parsing and answering.
-  Never fetch or consult the filings' HTML/XBRL versions on those paths —
-  the simulated-archive premise is part of the design.
-- Native text layer only; no OCR (stated scope cut).
-- Tesla filed a FY2025 10-K/A (routine Part III amendment). Record it in the
-  manifest; it does not affect the primary financial statements.
-- The benchmark's expected answers are populated by ME, by hand, from the
-  PDFs. Never generate or "fix" expected values — if one looks wrong, flag it
-  for me to re-check against the PDF.
-
-## Working style
-- Priority order: (1) correctness/trustworthiness of every number,
-  (2) explainability — plain code and plain reasoning over clever
-  abstractions, (3) simplicity/changeability, (4) scale (documented
-  path only, never built).
-- Co-ownership: for every non-obvious choice, one sentence of "why" in a
-  comment or the doc — enough that I can defend it, not an essay.
-- Phase discipline: each phase produces its artifact and STOPS for my
-  review (DESIGN.md → implementation milestones). Do not run ahead.
-- When real data contradicts an assumption (PDF layout, anchor phrase,
-  text-layer quality), surface it immediately rather than working around
-  it silently. Surprises are walkthrough material, not embarrassments.
-- When acceptance tests quarantine a parsed statement, stop and show me the
-  page and the failure — I am the human review queue.
-- If a claim needs a number (embedding cosine on the net-income label pair;
-  LLM arithmetic error rate on SEC-scale operands), measure it in this repo
-  and record it in notes/measurements.md — measured beats borrowed.
-- Prefer the standard library and already-chosen dependencies. Adding a
-  dependency requires a one-line justification in DESIGN.md.
-- ANTHROPIC_API_KEY from environment/.env; `data/`, `notes/` scratch, and
-  `.env` are gitignored; docs and code are committed with clear messages.
-
-## Testing discipline
-- The hand-verified benchmark is the only accepted measure of correctness.
-  Never report retrieval metrics as a proxy for answer correctness.
-- Every guard (grounding check, typed periods, footing, numeral audit)
-  gets at least one unit test proving it REJECTS bad input — a guard that
-  only passes good input is untested.
-- Run the benchmark before declaring any milestone done; report failures
-  by which guard leaked, not just a score.
+## Rules
+1. EXERCISE.md is the requirements ground truth. ARCHITECTURE.md and (once
+   approved) DESIGN.md are frozen: if implementation proves a decision wrong,
+   STOP and flag it — never silently deviate. ARCHITECTURE_full.md is
+   read-only reference.
+2. All arithmetic in deterministic code with an emitted step trace. The LLM
+   never computes, rounds, or restates a number.
+3. No embeddings on the numeric answer path. Embeddings serve MD&A/risk
+   prose retrieval only.
+4. Numeric facts come only from the three primary financial statements.
+5. EDGAR budget: 2 `submissions` calls + ≤20 one-time XBRL benchmark
+   spot-checks. Zero calls on the query path. Log every call. Never
+   hand-type manifest data — it comes from the API or not at all.
+6. Build strictly by ARCHITECTURE.md §5.5 tiers: P0 demo-able end-to-end
+   before any P1; P2 is never built. Features outside the tiers get flagged,
+   not added.
+7. Corpus = exactly these 6 PDFs in data/raw/, treated as opaque — never
+   consult their HTML/XBRL versions for parsing or answering; no OCR:
+   TSLA_10-K_FY2025, TSLA_10-Q_Q1-2026, TSLA_10-Q_Q1-2025,
+   AAPL_10-K_FY2025, AAPL_10-Q_FQ2-2026, AAPL_10-Q_FQ2-2025 (.pdf).
+   (Tesla's FY2025 10-K/A is a Part III amendment: manifest-recorded,
+   statements unaffected.)
+8. Refusal with a stated reason is a correct, first-class output. Never
+   stretch to answer.
+9. Benchmark expected values are entered by ME from the PDFs. Never generate
+   or "fix" one — flag suspected errors for me to re-check.
+10. The benchmark is the only accepted correctness measure; never report
+    retrieval metrics as a proxy. A milestone is done only after a benchmark
+    run reporting failures by which guard leaked.
+11. Every guard gets at least one unit test proving it REJECTS bad input.
+12. Stop for my review at every phase boundary and DESIGN.md milestone.
+    When acceptance tests quarantine a statement, stop and show me the page —
+    I am the review queue.
+13. Surface data surprises (layouts, anchors, text-layer quality) immediately;
+    never work around them silently. Every non-obvious choice gets one
+    sentence of "why" where it lives.
+14. Claims that need numbers (label-pair cosine, LLM arithmetic error rate)
+    get measured in this repo → notes/measurements.md. Measured beats
+    borrowed.
+15. Stdlib and already-chosen deps first; a new dependency costs a one-line
+    justification in DESIGN.md. API key from .env; data/, notes/, .env
+    gitignored.
