@@ -151,3 +151,51 @@ class FactWriter:
             "UPDATE filings SET ingested_at = ? WHERE accession_no = ?",
             (_now(), accession_no),
         )
+
+
+class FactReader:
+    """Query-side reads (§5.3 keyed lookup). The SQLite file is the only
+    coupling between ingest and query (§1)."""
+
+    def __init__(self, con: sqlite3.Connection):
+        con.row_factory = sqlite3.Row
+        self.con = con
+
+    _BASE = (
+        "SELECT f.*, fil.form_type, fil.filing_date,"
+        " fil.period_end AS filing_period_end"
+        " FROM facts f JOIN filings fil ON fil.accession_no = f.accession_no"
+    )
+
+    def lookup(
+        self,
+        ticker: str,
+        concept: str,
+        fiscal_year: int,
+        fiscal_period: str,
+        duration_types: tuple[str, ...],
+    ) -> list[sqlite3.Row]:
+        marks = ",".join("?" * len(duration_types))
+        return self.con.execute(
+            f"{self._BASE} WHERE f.ticker = ? AND f.concept = ?"
+            f" AND f.fiscal_year = ? AND f.fiscal_period = ?"
+            f" AND f.duration_type IN ({marks})"
+            " ORDER BY fil.filing_date DESC, f.id",
+            (ticker, concept, fiscal_year, fiscal_period, *duration_types),
+        ).fetchall()
+
+    def held_periods(
+        self, ticker: str, concept: str, duration_types: tuple[str, ...] | None = None
+    ) -> list[sqlite3.Row]:
+        """Distinct (fiscal_year, fiscal_period, duration_type) actually held,
+        newest first — drives 'latest' aliases and NOT_FILED_YET alternatives."""
+        where = "WHERE ticker = ? AND concept = ?"
+        args: list = [ticker, concept]
+        if duration_types:
+            where += f" AND duration_type IN ({','.join('?' * len(duration_types))})"
+            args += list(duration_types)
+        return self.con.execute(
+            "SELECT DISTINCT fiscal_year, fiscal_period, duration_type, period_end"
+            f" FROM facts {where} ORDER BY period_end DESC",
+            args,
+        ).fetchall()

@@ -57,9 +57,43 @@ def main(argv: list[str] | None = None) -> int:
 
         return ingest_run.run(filing=args.filing, dry_run=args.dry_run)
 
-    not_yet = {"ask": "P0.6", "bench": "P0.7", "measure": "M1"}
+    if args.command == "ask":
+        return _cmd_ask(args)
+
+    if args.command == "measure" and args.experiment == "llm-arithmetic":
+        from .measure import llm_arithmetic
+
+        return llm_arithmetic.run()
+
+    not_yet = {"bench": "P0.7", "measure": "P1.5 (label-cosine)"}
     parser.exit(2, f"sfi {args.command}: not built yet (arrives at {not_yet[args.command]})\n")
     return 2  # unreachable; parser.exit raises
+
+
+def _cmd_ask(args) -> int:
+    import json as json_mod
+    from datetime import date
+
+    from .common import config
+    from .concepts import dictionary as dictionary_mod
+    from .llm.client import LLMClient
+    from .query.pipeline import Deps, answer
+    from .store import db
+
+    manifest = json_mod.loads(config.MANIFEST_PATH.read_text())
+    deps = Deps(
+        reader=db.FactReader(db.connect()),
+        dictionary=dictionary_mod.load(),
+        manifest=manifest,
+        llm=LLMClient(),
+        today=date.today(),
+    )
+    result = answer(args.question, deps)
+    if args.json:
+        print(json_mod.dumps(result.evidence, indent=2))
+    else:
+        print(result.text)
+    return 0
 
 
 if __name__ == "__main__":
