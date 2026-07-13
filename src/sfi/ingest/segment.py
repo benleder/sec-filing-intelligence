@@ -134,8 +134,10 @@ def locate_statements(pages: list[str], ticker: str) -> list[LocatedStatement]:
 def extract_pages(pdf_path: Path) -> list[str]:
     import pdfplumber  # heavy import stays out of module load
 
+    from ..common.text import strip_print_furniture
+
     with pdfplumber.open(pdf_path) as pdf:
-        return [page.extract_text() or "" for page in pdf.pages]
+        return [strip_print_furniture(page.extract_text() or "") for page in pdf.pages]
 
 
 def segment_filing(pdf_path: Path, ticker: str) -> list[LocatedStatement]:
