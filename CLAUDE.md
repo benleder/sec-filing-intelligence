@@ -5,8 +5,7 @@ Every LLM output is either checked by deterministic code or explicitly
 disclosed as unchecked. LLM proposes; code disposes.
 
 ## Rules
-1. EXERCISE.md is the requirements ground truth. ARCHITECTURE.md and (once
-   approved) DESIGN.md are frozen: if implementation proves a decision wrong,
+1. EXERCISE.md is the requirements ground truth. ARCHITECTURE.md and DESIGN.md are frozen: if implementation proves a decision wrong,
    STOP and flag it — never silently deviate. ARCHITECTURE_full.md is
    read-only reference.
 2. All arithmetic in deterministic code with an emitted step trace. The LLM
