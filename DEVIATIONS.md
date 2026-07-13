@@ -105,3 +105,17 @@ cash flows on p8, notes on p9). Caught by the fixture regression test
 (strict-xfail with evidence), confirmed and corrected by Ben. All 30 rows
 now assert normally in
 `tests/ingest/test_segment_truth.py::test_recorded_start_page_holds`.
+
+## D6 — §3.5 planner schema: `maxItems: 2` moved from wire schema to code
+
+**2026-07-13.** The structured-outputs API rejects array constraints
+(`maxItems` → 400 `invalid_request_error`), so the periods cap cannot live in
+the wire schema as §3.5 writes it.
+
+- **What changed:** the schema ships without `maxItems`; `resolve.py`
+  enforces the ≤2-periods rule deterministically (`p.periods[:2]`). The
+  constraint is preserved — and in code, which is where the thesis wants
+  guards anyway.
+- **Pinned by:** the live planner calls (a schema carrying `maxItems` cannot
+  complete a single request), plus the resolve-path tests in
+  `tests/query/test_query.py`.
