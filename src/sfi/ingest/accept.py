@@ -1,8 +1,8 @@
 """Acceptance harness (§4.3): checks 0-3, cell normalization, concept mapping.
 L2 — imports common, concepts. Never imports query/.
 
-Two FLAGGED DEVIATIONS from §4.3 as written, both forced by the real PDFs
-(rule 1: deviations are visible, tested, and pending Ben's ratification):
+Two DEVIATIONS from §4.3 as written, both forced by the real PDFs and both
+RATIFIED 2026-07-13 (rule 1: visible, tested — see DEVIATIONS.md D2/D3):
 
 DEVIATION A — check 0(c), INSTANT groups. 10-Q balance sheets print the
 PRIOR FISCAL YEAR END as the comparative column (Tesla Q1: Dec 31, ~3 months

@@ -4,9 +4,10 @@ Matching:
 1. normalize both sides (normalize_chars per stop-2 rider, casefold, collapse
    whitespace, strip edge punctuation + trailing footnote markers)
 2. exact match against labels[company] — plus, when a section heading is
-   supplied, context_labels[company] (flagged §3.2 extension: both companies
-   print EPS rows as bare "Basic"/"Diluted", identical to the share-count
-   rows; only the printed section heading distinguishes them)
+   supplied, context_labels[company] (§3.2 extension, ratified 2026-07-13,
+   DEVIATIONS.md D1: both companies print EPS rows as bare "Basic"/"Diluted",
+   identical to the share-count rows; only the printed section heading
+   distinguishes them)
 3. anchored label_patterns only when no exact/context hit
 4. two or more concept hits => maps to NONE (Ambiguity) — never pick a side
 

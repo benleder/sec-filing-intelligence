@@ -4,11 +4,13 @@
 # NBSP (stop-2 rider), casefolds, collapses whitespace, and strips edge
 # punctuation/footnote markers (§3.2).
 #
-# context_labels is a flagged §3.2 EXTENSION (pending Ben's ratification):
-# both companies print EPS rows as bare "Basic"/"Diluted", identical to the
-# share-count rows below them; only the printed section-heading row
-# distinguishes the two. A context label matches iff the row label AND the
-# nearest preceding cell-less (heading) row both match exactly.
+# context_labels — §3.2 EXTENSION, RATIFIED 2026-07-13 (DEVIATIONS.md D1).
+# Heuristic: a context label matches iff BOTH (a) the row label matches the
+# `label` field exactly (after normalization) AND (b) the nearest PRECEDING
+# row with an empty cells array — i.e. a printed section heading — matches
+# the `section` field. Needed because both companies print EPS rows as bare
+# "Basic"/"Diluted", byte-identical to the share-count rows below them; only
+# the printed section heading distinguishes the two.
 #
 # typical_magnitude bands (§8-open) were set from the observed corpus values
 # with ~1-2 orders of margin; too tight => spurious quarantines, too loose =>

@@ -220,6 +220,31 @@ def test_page_outside_located_range_is_rejected():
     assert any("outside located range" in c.detail for c in fails(result.checks))
 
 
+def test_grounding_normalizes_apostrophes_and_nbsp():
+    # rider-2 pin, grounding side: a straight-apostrophe label grounds
+    # against the curly-apostrophe page; an NBSP value token still matches.
+    parsed = a.ParsedStatement(
+        "BALANCE", "(in millions)", 1_000_000, False,
+        (col(0, "2025-12-31", "INSTANT"),),
+        (row(0, "Total shareholders' equity", ["73,733"], page=80),),
+    )
+    texts = {80: "Total shareholders’ equity 73,733", 81: ""}
+    checks = a.check_grounding(
+        parsed, {p: a.build_page_tokens(t) for p, t in texts.items()}, texts, BAL_LOCATED
+    )
+    assert not fails(checks)
+    # …and nothing else loosens: a different word still fails.
+    parsed_bad = a.ParsedStatement(
+        "BALANCE", "(in millions)", 1_000_000, False,
+        (col(0, "2025-12-31", "INSTANT"),),
+        (row(0, "Total stockholders' equity", ["73,733"], page=80),),
+    )
+    checks_bad = a.check_grounding(
+        parsed_bad, {p: a.build_page_tokens(t) for p, t in texts.items()}, texts, BAL_LOCATED
+    )
+    assert fails(checks_bad)
+
+
 def test_value_present_only_in_stripped_furniture_fails_grounding():
     # stop-2 rider 3 pin: header/footer tokens must not ground anything.
     parsed = a.ParsedStatement(
