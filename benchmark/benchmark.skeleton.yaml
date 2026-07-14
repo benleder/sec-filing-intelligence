@@ -1,0 +1,492 @@
+# benchmark.skeleton.yaml — 25 entry stubs per DESIGN §6.1, counts per
+# ARCHITECTURE §6 (direct_lookup 8, derived 6, quarterly_yoy 3,
+# period_trap 3, label_trap 2, scale_trap 1, should_refuse 2).
+#
+# PROVENANCE (rule 9): entries marked # SUGGESTED carry AI-proposed QUESTION
+# WORDING ONLY. Every ground-truth field is a FILL_ME blank and ALL values
+# are human-recorded by Ben from the PDFs — nothing here was derived from,
+# or checked against, the parser or the fact store, so the ground truth
+# stays uncorrelated with the system under test.
+#
+# How to fill:
+#   behavior       -> answer | refuse | candidates | conflict
+#   value          -> exact normalized decimal string (sign + scale applied,
+#                     e.g. "416161000000", "1.18", "-1204000000"); null for
+#                     non-answer behaviors
+#   unit           -> USD | USD_PER_SHARE | ratio | pp
+#   concept        -> concepts.yaml id (or derived metric name)
+#   period         -> typed {fiscal_year, fiscal_period}; two-period entries
+#                     record the NEWER period here, the pair in notes
+#   citation.page  -> 1-based PDF page where YOU verified the number
+#   citation.raw_label        -> the label as printed (label_as_printed)
+#   citation.value_as_printed -> the cell as printed, e.g. "(1,204)" —
+#                     human-verification aid beyond the §6.1 template; the
+#                     scorer scores expect.value, this field is for eyeballs
+#   refusal_kind   -> RefusalKind name for behavior: refuse, else null
+#
+# Rename to benchmark.yaml when filled. Replace or reword any SUGGESTED
+# question freely — the wording is a proposal, not a constraint.
+
+# ---------------------------------------------------------------- direct_lookup (8)
+
+- id: B01
+  category: direct_lookup
+  question: "What was Apple's total revenue in fiscal 2025?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B02
+  category: direct_lookup
+  question: "What were Tesla's total revenues in fiscal year 2025?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B03
+  category: direct_lookup
+  question: "What was Tesla's net income for fiscal 2025?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B04
+  category: direct_lookup
+  question: "How much cash and cash equivalents did Apple report at the end of its second fiscal quarter of 2026?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B05
+  category: direct_lookup
+  question: "What were Tesla's total assets at the end of fiscal 2025?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B06
+  category: direct_lookup
+  question: "How much did Apple spend on research and development in fiscal 2025?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B07
+  category: direct_lookup
+  question: "What was Tesla's operating cash flow in Q1 of fiscal 2026?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B08
+  category: direct_lookup
+  question: "What were Apple's total liabilities at the end of fiscal 2025?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+# --------------------------------------------------------------------- derived (6)
+
+- id: B09
+  category: derived
+  question: "Calculate Apple's gross margin percentage for fiscal 2025."   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B10
+  category: derived
+  question: "What was Tesla's operating margin in Q1 of fiscal 2026?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B11
+  category: derived
+  question: "What was Apple's net profit margin in fiscal 2025?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B12
+  category: derived
+  question: "How much did Tesla's revenue grow from fiscal 2024 to fiscal 2025?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B13
+  category: derived
+  question: "What was Apple's net income growth between fiscal 2024 and fiscal 2025?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B14
+  category: derived
+  question: "By how many dollars did Tesla's selling, general and administrative expense change between Q1 fiscal 2025 and Q1 fiscal 2026?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+# --------------------------------------------------------------- quarterly_yoy (3)
+
+- id: B15
+  category: quarterly_yoy
+  question: "What was Tesla's Q1 revenue change year-over-year?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B16
+  category: quarterly_yoy
+  question: "How did Apple's fiscal second-quarter net income change year-over-year in 2026?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B17
+  category: quarterly_yoy
+  question: "How did Tesla's operating cash flow change year-over-year in the first quarter of fiscal 2026?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+# ----------------------------------------------------------------- period_trap (3)
+
+- id: B18
+  category: period_trap
+  question: "What is Tesla's net income growth between 2025 and 2026?"   # SUGGESTED
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B19
+  category: period_trap
+  question: "What was Apple's total revenue in 2025?"   # SUGGESTED (calendar-vs-fiscal ambiguity)
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B20
+  category: period_trap
+  question: "What was Tesla's revenue last quarter?"   # SUGGESTED (alias resolution against today's date)
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+# ------------------------------------------------------------------ label_trap (2)
+
+- id: B21
+  category: label_trap
+  question: "What was Tesla's net income in the first quarter of fiscal 2026?"   # SUGGESTED (plain net income, NOT attributable-to-common)
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B22
+  category: label_trap
+  question: "What was Tesla's net income attributable to common stockholders in fiscal 2025?"   # SUGGESTED (the near-miss row, asked for explicitly)
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+# ------------------------------------------------------------------ scale_trap (1)
+
+- id: B23
+  category: scale_trap
+  question: "What was Apple's diluted earnings per share in fiscal 2025?"   # SUGGESTED (per-share row inside a millions-declared statement)
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+# --------------------------------------------------------------- should_refuse (2)
+
+- id: B24
+  category: should_refuse
+  question: "What was Microsoft's net income in the latest annual filing?"   # SUGGESTED (out-of-corpus company)
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
+
+- id: B25
+  category: should_refuse
+  question: "What did Tesla's management cite as risks this quarter?"   # SUGGESTED (narrative question; prose path is P1.5)
+  expect:
+    behavior: FILL_ME
+    value: FILL_ME
+    unit: FILL_ME
+    concept: FILL_ME
+    period: {fiscal_year: FILL_ME, fiscal_period: FILL_ME}
+    citation:
+      company: FILL_ME
+      form_type: FILL_ME
+      page: FILL_ME
+      raw_label: FILL_ME
+      value_as_printed: FILL_ME
+    refusal_kind: FILL_ME_OR_NULL
+  notes: ""
