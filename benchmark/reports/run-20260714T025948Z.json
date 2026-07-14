@@ -1,0 +1,262 @@
+{
+  "generated_at": "2026-07-14T02:59:48+00:00",
+  "total": 25,
+  "passed": 25,
+  "per_category": {
+    "direct_lookup": {
+      "passed": 8,
+      "total": 8
+    },
+    "derived": {
+      "passed": 6,
+      "total": 6
+    },
+    "quarterly_yoy": {
+      "passed": 3,
+      "total": 3
+    },
+    "period_trap": {
+      "passed": 3,
+      "total": 3
+    },
+    "label_trap": {
+      "passed": 2,
+      "total": 2
+    },
+    "scale_trap": {
+      "passed": 1,
+      "total": 1
+    },
+    "should_refuse": {
+      "passed": 2,
+      "total": 2
+    }
+  },
+  "entries": [
+    {
+      "id": "B01",
+      "category": "direct_lookup",
+      "question": "What was Apple's total revenue in fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 416161000000 on 'Total net sales' p.40",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B02",
+      "category": "direct_lookup",
+      "question": "What were Tesla's total revenues in fiscal year 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 94827000000 on 'Total revenues' p.82",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B03",
+      "category": "direct_lookup",
+      "question": "What was Tesla's net income for fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 3855000000 on 'Net income' p.82",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B04",
+      "category": "direct_lookup",
+      "question": "How much cash and cash equivalents did Apple report at the end of its second fiscal quarter of 2026?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 45572000000 on 'Cash and cash equivalents' p.6",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B05",
+      "category": "direct_lookup",
+      "question": "What were Tesla's total assets at the end of fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 137806000000 on 'Total assets' p.80",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B06",
+      "category": "direct_lookup",
+      "question": "How much did Apple spend on research and development in fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 34550000000 on 'Research and development' p.40",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B07",
+      "category": "direct_lookup",
+      "question": "What was Tesla's operating cash flow in Q1 of fiscal 2026?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 3937000000 on 'Net cash provided by operating activities' p.9",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B08",
+      "category": "direct_lookup",
+      "question": "What were Apple's total liabilities at the end of fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 285508000000 on 'Total liabilities' p.42",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B09",
+      "category": "derived",
+      "question": "Calculate Apple's gross margin percentage for fiscal 2025.",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 0.4690516411 on 'Gross margin' p.40",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B10",
+      "category": "derived",
+      "question": "What was Tesla's operating margin in Q1 of fiscal 2026?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 0.0420333229 on 'Income from operations' p.6",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B11",
+      "category": "derived",
+      "question": "What was Apple's net profit margin in fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 0.2691506412 on 'Net income' p.40",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B12",
+      "category": "derived",
+      "question": "How much did Tesla's revenue grow from fiscal 2024 to fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value -0.0293069915 on 'Total revenues' p.82",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B13",
+      "category": "derived",
+      "question": "What was Apple's net income growth between fiscal 2024 and fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 0.1949517795 on 'Net income' p.40",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B14",
+      "category": "derived",
+      "question": "By how many dollars did Tesla's selling, general and administrative expense change between Q1 fiscal 2025 and Q1 fiscal 2026?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 582000000 on 'Selling, general and administrative' p.6",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B15",
+      "category": "quarterly_yoy",
+      "question": "What was Tesla's Q1 revenue change year-over-year?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 0.1578484613 on 'Total revenues' p.6",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B16",
+      "category": "quarterly_yoy",
+      "question": "How did Apple's fiscal second-quarter net income change year-over-year in 2026?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 0.1936238902 on 'Net income' p.4",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B17",
+      "category": "quarterly_yoy",
+      "question": "How did Tesla's operating cash flow change year-over-year in the first quarter of fiscal 2026?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 0.8260667904 on 'Net cash provided by operating activities' p.9",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B18",
+      "category": "period_trap",
+      "question": "What is Tesla's net income growth between 2025 and 2026?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "refused NOT_FILED_YET",
+      "retrieval_ok": null
+    },
+    {
+      "id": "B19",
+      "category": "period_trap",
+      "question": "What was Apple's total revenue in 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 416161000000 on 'Total net sales' p.40",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B20",
+      "category": "period_trap",
+      "question": "What was Tesla's revenue last quarter?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "refused NOT_FILED_YET",
+      "retrieval_ok": null
+    },
+    {
+      "id": "B21",
+      "category": "label_trap",
+      "question": "What was Tesla's net income in the first quarter of fiscal 2026?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 491000000 on 'Net income' p.6",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B22",
+      "category": "label_trap",
+      "question": "What was Tesla's net income attributable to common stockholders in fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 3794000000 on 'Net income attributable to common stockholders' p.82",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B23",
+      "category": "scale_trap",
+      "question": "What was Apple's diluted earnings per share in fiscal 2025?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "value 7.46 on 'Diluted' p.40",
+      "retrieval_ok": true
+    },
+    {
+      "id": "B24",
+      "category": "should_refuse",
+      "question": "What was Microsoft's net income in the latest annual filing?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "refused OUT_OF_CORPUS",
+      "retrieval_ok": null
+    },
+    {
+      "id": "B25",
+      "category": "should_refuse",
+      "question": "What did Tesla's management cite as risks this quarter?",
+      "passed": true,
+      "failure_class": null,
+      "detail": "refused NARRATIVE_NOT_SUPPORTED",
+      "retrieval_ok": null
+    }
+  ]
+}

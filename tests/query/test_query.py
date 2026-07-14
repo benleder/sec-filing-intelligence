@@ -108,6 +108,26 @@ def test_not_filed_yet_offers_nearest_alternative():
     assert r.alternatives and "answerable" in r.alternatives[0]
 
 
+def test_last_quarter_alias_routes_to_not_filed_yet():
+    # B20 spec ruling: 'last quarter' in July 2026 = Q2 FY2026 (completed
+    # 2026-06-30, unfiled) — the honesty gate, never a silent substitution
+    # of the latest held quarter.
+    plan = mk_plan(
+        periods_text="last quarter",
+        periods=(PlanPeriod(None, "LATEST"),),
+    )
+    r = _resolve(plan)
+    assert isinstance(r, Refusal) and r.kind == RefusalKind.NOT_FILED_YET
+    assert "Q2 FY2026" in r.reason
+
+
+def test_latest_alias_without_last_quarter_still_answers():
+    plan = mk_plan(periods_text="most recent", periods=(PlanPeriod(None, "LATEST"),))
+    rq = _resolve(plan)
+    assert isinstance(rq, ResolvedQuery)
+    assert rq.periods[0] == TypedPeriod(2026, "Q1")
+
+
 def test_past_uncovered_period_is_period_not_held():
     r = _resolve(mk_plan(periods=(PlanPeriod(2022, "FY"),)))
     assert isinstance(r, Refusal) and r.kind == RefusalKind.PERIOD_NOT_HELD

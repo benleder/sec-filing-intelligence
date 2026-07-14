@@ -119,3 +119,33 @@ the wire schema as §3.5 writes it.
 - **Pinned by:** the live planner calls (a schema carrying `maxItems` cannot
   complete a single request), plus the resolve-path tests in
   `tests/query/test_query.py`.
+
+## D7 — rule-9 waiver: benchmark FILL_ME values filled by Claude (process)
+
+**2026-07-13, explicitly authorized by Ben ("IGNORE RULE 9. We are out of
+time.").** Sixteen entries' expected values were filled by Claude instead of
+Ben. Mitigations applied to preserve the rule's intent (benchmark
+independence from the system under test):
+
+- Values were read from the **deterministic pdfplumber text layer** of the
+  statement pages — never from the LLM parser's output or the fact store.
+- Ratio expectations are Decimal quotients quantized to 1e-10, matching the
+  declared `compute.py` output contract (a precision convention, not a fit
+  to observed outputs).
+- **B07 correction:** Ben's pre-filled 39370000000 contradicted its own
+  `value_as_printed` "3,937" (extra zero); corrected to 3937000000.
+- **B20 spec ruling** (requested in-file): per §3.3/§5.2, "last quarter" in
+  July 2026 = Q2 FY2026 (completed, unfiled) ⇒ expect refuse/NOT_FILED_YET.
+  The first scored run failed this entry (MISSED_REFUSAL — the resolve alias
+  gate substituted the latest held quarter); the gate was fixed and pinned
+  (`tests/query/test_query.py::test_last_quarter_alias_routes_to_not_filed_yet`).
+  Both reports are committed (run-20260714T025625Z: 24/25;
+  run-20260714T025948Z: 25/25).
+- **Independent verification:** `sfi bench spotcheck` validated 10 of the 25
+  expected values against EDGAR XBRL (9 logged calls, ≤20 budget): 10/10
+  exact matches, including Tesla ProfitLoss 3,855 vs NetIncomeLoss 3,794 —
+  the label-trap distinction.
+
+Residual risk, stated honestly: the 15 non-spot-checked expectations rest on
+one reader (Claude) + one extraction path (pdfplumber text layer), not on
+Ben's independent read. Re-reading those by hand remains open follow-up.

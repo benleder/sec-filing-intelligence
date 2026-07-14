@@ -32,7 +32,7 @@ def main(argv: list[str] | None = None) -> int:
     p_ask.add_argument("--json", action="store_true", help="dump the evidence object")
 
     p_bench = sub.add_parser("bench", help="benchmark harness (§6)")
-    p_bench.add_argument("action", choices=["run", "spotcheck"])
+    p_bench.add_argument("action", choices=["run", "spotcheck", "validate"])
 
     p_measure = sub.add_parser(
         "measure", help="rule-14 measurements -> notes/measurements.md"
@@ -65,7 +65,20 @@ def main(argv: list[str] | None = None) -> int:
 
         return llm_arithmetic.run()
 
-    not_yet = {"bench": "P0.7", "measure": "P1.5 (label-cosine)"}
+    if args.command == "bench":
+        if args.action == "validate":
+            from .bench.runner import cmd_validate
+
+            return cmd_validate()
+        if args.action == "run":
+            from .bench.runner import cmd_run
+
+            return cmd_run()
+        from .bench import xbrl_spotcheck
+
+        return xbrl_spotcheck.run()
+
+    not_yet = {"measure": "P1.5 (label-cosine)"}
     parser.exit(2, f"sfi {args.command}: not built yet (arrives at {not_yet[args.command]})\n")
     return 2  # unreachable; parser.exit raises
 

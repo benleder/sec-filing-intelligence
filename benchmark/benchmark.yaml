@@ -1,0 +1,492 @@
+# benchmark.prefilled.yaml — 25 entries per DESIGN §6.1.
+#
+#   The scorer hard-fails on any surviving FILL_ME. Run `sfi bench
+#   --validate` after filling to check concept ids, enum names, counts,
+#   and referential sanity before a scored run.
+#
+# Category counts: direct_lookup 8, derived 6, quarterly_yoy 3,
+# period_trap 3, label_trap 2, scale_trap 1, should_refuse 2.
+
+
+# ------------------------------------------------------------------ direct_lookup
+# READ: AAPL_10-K_FY2025.pdf p.40 — 'Total net sales' row, FY2025 (Sep 27, 2025) column
+- id: B01
+  category: direct_lookup
+  question: "What was Apple's total revenue in fiscal 2025?"
+  expect:
+    behavior: answer
+    value: 416161000000
+    unit: USD
+    concept: revenue   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: AAPL
+      form_type: 10-K
+      page: 40   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Total net sales"
+      value_as_printed: "416,161"
+    refusal_kind: null
+  notes: ""
+
+# READ: TSLA_10-K_FY2025.pdf p.82 — 'Total revenues' row, 2025 column
+- id: B02
+  category: direct_lookup
+  question: "What were Tesla's total revenues in fiscal year 2025?"
+  expect:
+    behavior: answer
+    value: 94827000000
+    unit: USD
+    concept: revenue   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: TSLA
+      form_type: 10-K
+      page: 82   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Total revenues"
+      value_as_printed: "94,827"
+    refusal_kind: null
+  notes: ""
+
+# READ: TSLA_10-K_FY2025.pdf p.82 — the PLAIN 'Net income' row (NOT attributable-to-common), 2025 column
+- id: B03
+  category: direct_lookup
+  question: "What was Tesla's net income for fiscal 2025?"
+  expect:
+    behavior: answer
+    value: 3855000000
+    unit: USD
+    concept: net_income   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: TSLA
+      form_type: 10-K
+      page: 82   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Net income"
+      value_as_printed: "3,855"
+    refusal_kind: null
+  notes: ""
+
+# READ: AAPL_10-Q_FQ2-2026.pdf p.6 — 'Cash and cash equivalents' row, Mar 28 2026 column
+- id: B04
+  category: direct_lookup
+  question: "How much cash and cash equivalents did Apple report at the end of its second fiscal quarter of 2026?"
+  expect:
+    behavior: answer
+    value: 45572000000
+    unit: USD
+    concept: cash_and_equivalents   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2026, fiscal_period: Q2}
+    citation:
+      company: AAPL
+      form_type: 10-Q
+      page: 6   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Cash and cash equivalents"
+      value_as_printed: "45,572"
+    refusal_kind: null
+  notes: ""
+
+# READ: TSLA_10-K_FY2025.pdf p.80 — 'Total assets' row, Dec 31 2025 column
+- id: B05
+  category: direct_lookup
+  question: "What were Tesla's total assets at the end of fiscal 2025?"
+  expect:
+    behavior: answer
+    value: 137806000000
+    unit: USD
+    concept: total_assets   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: TSLA
+      form_type: 10-K
+      page: 80   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Total assets"
+      value_as_printed: "137,806"
+    refusal_kind: null
+  notes: ""
+
+# READ: AAPL_10-K_FY2025.pdf p.40 — 'Research and development' row, FY2025 column
+- id: B06
+  category: direct_lookup
+  question: "How much did Apple spend on research and development in fiscal 2025?"
+  expect:
+    behavior: answer
+    value: 34550000000
+    unit: USD
+    concept: rd_expense   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: AAPL
+      form_type: 10-K
+      page: 40   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Research and development"
+      value_as_printed: "34,550"
+    refusal_kind: null
+  notes: ""
+
+# READ: TSLA_10-Q_Q1-2026.pdf p.9 — 'Net cash provided by operating activities' row, 2026 column
+- id: B07
+  category: direct_lookup
+  question: "What was Tesla's operating cash flow in Q1 of fiscal 2026?"
+  expect:
+    behavior: answer
+    value: 3937000000
+    unit: USD
+    concept: operating_cash_flow   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2026, fiscal_period: Q1}
+    citation:
+      company: TSLA
+      form_type: 10-Q
+      page: 9   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Net cash provided by operating activities"
+      value_as_printed: "3,937"
+    refusal_kind: null
+  notes: "value corrected from 39370000000 during waiver fill: extra zero vs its own value_as_printed 3,937 (in millions) and the p.9 text layer. [rule-9 waiver fill]"
+
+# READ: AAPL_10-K_FY2025.pdf p.42 — 'Total liabilities' row, Sep 27 2025 column
+- id: B08
+  category: direct_lookup
+  question: "What were Apple's total liabilities at the end of fiscal 2025?"
+  expect:
+    behavior: answer
+    value: 285508000000
+    unit: USD
+    concept: total_liabilities   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: AAPL
+      form_type: 10-K
+      page: 42   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Total liabilities"
+      value_as_printed: "285,508"
+    refusal_kind: null
+  notes: ""
+
+# ------------------------------------------------------------------ derived
+# READ: AAPL_10-K_FY2025.pdf p.40 — record printed 'Total net sales' and 'Gross margin' dollars; expected value = gross/revenue at full precision
+- id: B09
+  category: derived
+  question: "Calculate Apple's gross margin percentage for fiscal 2025."
+  expect:
+    behavior: answer
+    value: "0.4690516411"
+    unit: ratio
+    concept: gross_margin   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: AAPL
+      form_type: 10-K
+      page: 40   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Gross margin"
+      value_as_printed: "195,201"
+    refusal_kind: null
+  notes: "components (p.40, text layer): Gross margin 195,201 / Total net sales 416,161; value = quotient quantized 1e-10 (compute.py contract). [rule-9 waiver fill]"
+
+# READ: TSLA_10-Q_Q1-2026.pdf p.6 — 'Income from operations' / 'Total revenues', 2026 column
+- id: B10
+  category: derived
+  question: "What was Tesla's operating margin in Q1 of fiscal 2026?"
+  expect:
+    behavior: answer
+    value: "0.0420333229"
+    unit: ratio
+    concept: operating_margin   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2026, fiscal_period: Q1}
+    citation:
+      company: TSLA
+      form_type: 10-Q
+      page: 6   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Income from operations"
+      value_as_printed: "941"
+    refusal_kind: null
+  notes: "components (p.6): Income from operations 941 / Total revenues 22,387. [rule-9 waiver fill]"
+
+# READ: AAPL_10-K_FY2025.pdf p.40 — 'Net income' / 'Total net sales', FY2025 column
+- id: B11
+  category: derived
+  question: "What was Apple's net profit margin in fiscal 2025?"
+  expect:
+    behavior: answer
+    value: "0.2691506412"
+    unit: ratio
+    concept: net_margin   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: AAPL
+      form_type: 10-K
+      page: 40   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Net income"
+      value_as_printed: "112,010"
+    refusal_kind: null
+  notes: "components (p.40): Net income 112,010 / Total net sales 416,161. [rule-9 waiver fill]"
+
+# READ: TSLA_10-K_FY2025.pdf p.82 — 'Total revenues' 2025 and 2024 columns; value = (y-x)/|x|
+- id: B12
+  category: derived
+  question: "How much did Tesla's revenue grow from fiscal 2024 to fiscal 2025?"
+  expect:
+    behavior: answer
+    value: "-0.0293069915"
+    unit: ratio
+    concept: revenue   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: TSLA
+      form_type: 10-K
+      page: 82   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Total revenues"
+      value_as_printed: "94,827"
+    refusal_kind: null
+  notes: "printed: FY2025 94,827, FY2024 97,690 (both p.82); growth is NEGATIVE. [rule-9 waiver fill]"
+
+# READ: AAPL_10-K_FY2025.pdf p.40 — 'Net income' FY2025 and FY2024 columns; value = (y-x)/|x|
+- id: B13
+  category: derived
+  question: "What was Apple's net income growth between fiscal 2024 and fiscal 2025?"
+  expect:
+    behavior: answer
+    value: "0.1949517795"
+    unit: ratio
+    concept: net_income   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: AAPL
+      form_type: 10-K
+      page: 40   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Net income"
+      value_as_printed: "112,010"
+    refusal_kind: null
+  notes: "printed: FY2025 112,010, FY2024 93,736 (both p.40). [rule-9 waiver fill]"
+
+# READ: TSLA_10-Q_Q1-2026.pdf p.6 — 'Selling, general and administrative' BOTH columns (2026 and 2025 comparative); value = newer - older
+- id: B14
+  category: derived
+  question: "By how many dollars did Tesla's selling, general and administrative expense change between Q1 fiscal 2025 and Q1 fiscal 2026?"
+  expect:
+    behavior: answer
+    value: 582000000
+    unit: USD
+    concept: sga_expense   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2026, fiscal_period: Q1}
+    citation:
+      company: TSLA
+      form_type: 10-Q
+      page: 6   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Selling, general and administrative"
+      value_as_printed: "1,833"
+    refusal_kind: null
+  notes: "printed: Q1 FY2026 1,833 (Q1-2026 p.6), Q1 FY2025 comparative 1,251; delta = 582 x 1e6. [rule-9 waiver fill]"
+
+# ------------------------------------------------------------------ quarterly_yoy
+# READ: TSLA_10-Q_Q1-2026.pdf p.6 'Total revenues' 2026 column + TSLA_10-Q_Q1-2025.pdf p.6 same row 2025 column
+- id: B15
+  category: quarterly_yoy
+  question: "What was Tesla's Q1 revenue change year-over-year?"
+  expect:
+    behavior: answer
+    value: "0.1578484613"
+    unit: ratio
+    concept: revenue   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2026, fiscal_period: Q1}
+    citation:
+      company: TSLA
+      form_type: 10-Q
+      page: 6   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Total revenues"
+      value_as_printed: "22,387"
+    refusal_kind: null
+  notes: "printed: 22,387 (Q1-2026 10-Q p.6) vs 19,335 (Q1-2025 10-Q p.6). [rule-9 waiver fill]"
+
+# READ: AAPL_10-Q_FQ2-2026.pdf p.4 'Net income' THREE-months 2026 column + AAPL_10-Q_FQ2-2025.pdf p.4 same (beware the six-month columns)
+- id: B16
+  category: quarterly_yoy
+  question: "How did Apple's fiscal second-quarter net income change year-over-year in 2026?"
+  expect:
+    behavior: answer
+    value: "0.1936238902"
+    unit: ratio
+    concept: net_income   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2026, fiscal_period: Q2}
+    citation:
+      company: AAPL
+      form_type: 10-Q
+      page: 4   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Net income"
+      value_as_printed: "29,578"
+    refusal_kind: null
+  notes: "three-month columns: 29,578 (FQ2-2026 p.4) vs 24,780 (FQ2-2025 p.4). [rule-9 waiver fill]"
+
+# READ: TSLA_10-Q_Q1-2026.pdf p.9 + TSLA_10-Q_Q1-2025.pdf p.9 — 'Net cash provided by operating activities'
+- id: B17
+  category: quarterly_yoy
+  question: "How did Tesla's operating cash flow change year-over-year in the first quarter of fiscal 2026?"
+  expect:
+    behavior: answer
+    value: "0.8260667904"
+    unit: ratio
+    concept: operating_cash_flow   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2026, fiscal_period: Q1}
+    citation:
+      company: TSLA
+      form_type: 10-Q
+      page: 9   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Net cash provided by operating activities"
+      value_as_printed: "3,937"
+    refusal_kind: null
+  notes: "printed: 3,937 (Q1-2026 p.9) vs 2,156 (Q1-2025 p.9). [rule-9 waiver fill]"
+
+# ------------------------------------------------------------------ period_trap
+# READ: No PDF needed — FY2026 not filed as of run date; expected refusal with alternative offered
+- id: B18
+  category: period_trap
+  question: "What is Tesla's net income growth between 2025 and 2026?"
+  expect:
+    behavior: refuse
+    value: null
+    unit: null
+    concept: null
+    period: {fiscal_year: null, fiscal_period: null}
+    citation:
+      company: TSLA
+      form_type: null
+      page: null
+      raw_label: null
+      value_as_printed: null
+    refusal_kind: NOT_FILED_YET
+  notes: "The A4 honesty test. Alternative (Q1 vs Q1) should be offered but scoring is on behavior+kind."
+
+# READ: Same cell as B01 — but STILL read it fresh from p.40; expected answer is the FISCAL-2025 reading with the fiscal-calendar caveat
+- id: B19
+  category: period_trap
+  question: "What was Apple's total revenue in 2025?"
+  expect:
+    behavior: answer
+    value: 416161000000
+    unit: USD
+    concept: revenue   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: AAPL
+      form_type: 10-K
+      page: 40   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Total net sales"
+      value_as_printed: "416,161"
+    refusal_kind: null
+  notes: "Scores the fiscal interpretation + caveat presence, not just the value."
+
+# READ: SPEC CHECK FIRST (see comment): expected behavior depends on DESIGN's alias rule for 'last quarter'
+# !! SPEC CHECK: resolve DESIGN's 'last quarter' alias rule before filling — see notes.
+- id: B20
+  category: period_trap
+  question: "What was Tesla's revenue last quarter?"
+  expect:
+    behavior: refuse
+    value: null
+    unit: null
+    concept: revenue
+    period: {fiscal_year: null, fiscal_period: null}
+    citation:
+      company: TSLA
+      form_type: null
+      page: null
+      raw_label: null
+      value_as_printed: null
+    refusal_kind: NOT_FILED_YET
+  notes: "SPEC RULING (DESIGN §3.3/§5.2): aliases resolve against the calendar; 'last quarter' as of 2026-07-13 = Q2 FY2026 (completed 2026-06-30, unfiled) => NOT_FILED_YET with the Q1 FY2026 alternative — same honesty posture as the named FY2026 case. Filled per SPEC, not per system behavior. [rule-9 waiver fill]"
+
+# ------------------------------------------------------------------ label_trap
+# READ: TSLA_10-Q_Q1-2026.pdf p.6 — the PLAIN 'Net income' row; deliberately near 'Net income attributable to common stockholders'
+- id: B21
+  category: label_trap
+  question: "What was Tesla's net income in the first quarter of fiscal 2026?"
+  expect:
+    behavior: answer
+    value: 491000000
+    unit: USD
+    concept: net_income   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2026, fiscal_period: Q1}
+    citation:
+      company: TSLA
+      form_type: 10-Q
+      page: 6   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Net income"
+      value_as_printed: "491"
+    refusal_kind: null
+  notes: ""
+
+# READ: TSLA_10-K_FY2025.pdf p.82 — 'Net income attributable to common stockholders' row; must NOT be the plain net-income value
+- id: B22
+  category: label_trap
+  question: "What was Tesla's net income attributable to common stockholders in fiscal 2025?"
+  expect:
+    behavior: answer
+    value: 3794000000
+    unit: USD
+    concept: net_income_attributable_common   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: TSLA
+      form_type: 10-K
+      page: 82   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Net income attributable to common stockholders"
+      value_as_printed: "3,794"
+    refusal_kind: null
+  notes: ""
+
+# ------------------------------------------------------------------ scale_trap
+# READ: AAPL_10-K_FY2025.pdf p.40 — 'Diluted' row under earnings-per-share section; expected normalized value is the printed dollars (scale 1), NOT x10^6
+- id: B23
+  category: scale_trap
+  question: "What was Apple's diluted earnings per share in fiscal 2025?"
+  expect:
+    behavior: answer
+    value: 7.46
+    unit: USD_PER_SHARE
+    concept: eps_diluted   # VERIFY id against concepts.yaml (run: sfi bench --validate)
+    period: {fiscal_year: 2025, fiscal_period: FY}
+    citation:
+      company: AAPL
+      form_type: 10-K
+      page: 40   # from segmentation_truth.csv — confirm the row is on this page while reading
+      raw_label: "Diluted"
+      value_as_printed: "7.46"
+    refusal_kind: null
+  notes: ""
+
+# ------------------------------------------------------------------ should_refuse
+# READ: No PDF needed — out-of-corpus company
+- id: B24
+  category: should_refuse
+  question: "What was Microsoft's net income in the latest annual filing?"
+  expect:
+    behavior: refuse
+    value: null
+    unit: null
+    concept: null
+    period: {fiscal_year: null, fiscal_period: null}
+    citation:
+      company: MSFT
+      form_type: null
+      page: null
+      raw_label: null
+      value_as_printed: null
+    refusal_kind: OUT_OF_CORPUS   # VERIFY enum name against common/models.py RefusalKind
+  notes: ""
+
+# READ: No PDF needed — narrative path not built in P0
+- id: B25
+  category: should_refuse
+  question: "What did Tesla's management cite as risks this quarter?"
+  expect:
+    behavior: refuse
+    value: null
+    unit: null
+    concept: null
+    period: {fiscal_year: null, fiscal_period: null}
+    citation:
+      company: TSLA
+      form_type: null
+      page: null
+      raw_label: null
+      value_as_printed: null
+    refusal_kind: NARRATIVE_NOT_SUPPORTED   # VERIFY enum name against common/models.py RefusalKind
+  notes: "If P1.5 ships the narrative path, this entry's expectation must be revisited (J2)."

@@ -3,7 +3,7 @@ period availability. The planner extracts; THIS module decides refusals."""
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 
 from ..common import config
 from ..common.periods import FiscalCalendar
@@ -33,6 +33,29 @@ def _held(reader, ticker: str, concept: str, statement: str) -> list:
         if r["duration_type"] in duration_family(statement, r["fiscal_period"]):
             held.append((r["fiscal_year"], r["fiscal_period"], r["period_end"]))
     return held
+
+
+# SEC 10-Q deadline for large accelerated filers is 40 days; a just-ended,
+# unfiled period inside this window is honestly "not filed yet", not
+# "outside the corpus".
+_FILING_GRACE = timedelta(days=45)
+
+
+def _last_completed_quarter(calendar: FiscalCalendar, today: date) -> tuple[int, str]:
+    """'last quarter' denotes the most recent COMPLETED fiscal quarter —
+    which in a filing lag window is typically unfiled, and must route to the
+    NOT_FILED_YET honesty gate rather than silently substituting the latest
+    held quarter (benchmark B20 spec ruling)."""
+    fy = calendar.fiscal_year_of(today)
+    fy_start_anchor = calendar.fy_end_approx(fy - 1)
+    for quarter in (3, 2, 1):
+        end = fy_start_anchor + timedelta(days=round(quarter * 91.3125))
+        if end <= today:
+            return fy, f"Q{quarter}"
+    # inside the first quarter of fy: the prior completed quarter is last
+    # fiscal year's Q4, which has no 10-Q — the nearest quarterly period is
+    # the prior year's Q3
+    return fy - 1, "Q3"
 
 
 def _default_pair(held: list) -> tuple[TypedPeriod, TypedPeriod] | None:
@@ -113,7 +136,10 @@ def resolve(p: Plan, manifest: dict, dictionary, reader, today: date) -> Resolve
     for pp in p.periods[:2]:
         fy, fp = pp.fiscal_year, pp.fiscal_period
         if fp == "LATEST" and fy is None:
-            fy, fp = held[0][0], held[0][1]
+            if "last quarter" in p.periods_text.casefold():
+                fy, fp = _last_completed_quarter(calendar, today)
+            else:
+                fy, fp = held[0][0], held[0][1]
             alias = True
         elif fp == "LATEST":
             matches = [h for h in held if h[0] == fy]
@@ -184,7 +210,7 @@ def resolve(p: Plan, manifest: dict, dictionary, reader, today: date) -> Resolve
             approx_end = calendar.fy_end_approx(tp.fiscal_year - 1) + timedelta(
                 days=round(quarter * 91.3125)
             )
-        if approx_end >= today or tp.fiscal_year > held[0][0]:
+        if approx_end + _FILING_GRACE >= today or tp.fiscal_year > held[0][0]:
             alternatives = ()
             pair = _default_pair(held)
             if pair:
